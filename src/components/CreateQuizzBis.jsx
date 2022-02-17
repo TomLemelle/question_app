@@ -1,38 +1,32 @@
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { useState } from "react";
-import { storage } from "../firebase/firebase-config";
-import uuid from "react-uuid";
 import ReactPlayer from 'react-player'
 
 const CreateQuizz = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [image, setImage] = useState('');
-    const [moeImage, setMoeImage] = useState([]);
-    const [token, setToken] = useState('');
-    const [progress, setProgress] = useState(0);
-    const baseURL = "https://127.0.0.1:8000/api/"
+    const baseURL = "http://127.0.0.1:8000/api/"
+    const [userImageUrl, setUserImageUrl] = useState('')
+    const [videoExcerpt, setVideoExcerpt] = useState([])
 
     const onSubmit = async data => {
         try {
-            if(image == null) {
-                alert("Choisissez au moin une image");
-            } else {
-//                let newImgName = 'image-' + uuid() + "-" + data.image;
-  //              data.imageName = newImgName;
-                //console.log('data image info', data.imageName);
-                console.log(data)
-                data.answersProposed = Object.values(data.answersProposed);
-                const asyncCreateQuizz = async () => {
-                    const res = await axios.post(baseURL + "creates", data )
-                    console.log(res.data);
-                }
-                asyncCreateQuizz();
+            console.log(data)
+            data.answersProposed = Object.values(data.answersProposed);
+                const res = await axios.post(baseURL + "creates", data )
+                console.log(res.data);
+            } catch (e) {
+                console.log(e);
             }
-        } catch (error) {
-            console.error('error occured:' + error)   
-        }
+       
+    }
+
+    const findAnimeAndShowExcerpt = async () => {
+        return await axios.get(`https://api.trace.moe/search?url=${encodeURIComponent(userImageUrl)}`)
+            .then(videoUrl => {
+                setVideoExcerpt(oldArray => [...oldArray, videoUrl.data.result[0].video])
+            })
     }
 
     return (
@@ -43,8 +37,7 @@ const CreateQuizz = () => {
                     {errors.question && <span>Ce champ est requis</span>}
                 </div>
                 <div className="image-input">
-                    <input {...register("imageName", { required: true })} placeholder="L'url de votre image" type="text"/>
-                    {image && <span>{image.name}</span> }
+                    <input {...register("imageName", { required: true })} placeholder="L'url de votre image" type="text" onChange={(e) => setUserImageUrl(e.target.value)} onBlur={findAnimeAndShowExcerpt} />
                     {errors.image && <span>Ce champ est requis</span>}
                 </div>
 
@@ -71,13 +64,16 @@ const CreateQuizz = () => {
 
                 <div className="submit">
                     <button type="submit">Créer mon quizz</button>
+                </div>         
+
+                <div className="excerpt">
+                    {videoExcerpt?.map((video, idx) => (
+                        <ReactPlayer url={video} playing={true} muted={true} loop={true} controls={true} key={idx} width={"100%"} />
+                    ))}
                 </div>
-                
-                <h3 style={{color: 'white', fontFamily: "sans-serif", marginTop: '10px'}}>Téléchargement: {progress}%</h3>
 
             </div>
-
-
+           
         </form>
     )
 }
