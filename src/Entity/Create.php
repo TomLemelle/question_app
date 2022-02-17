@@ -3,12 +3,20 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\CreateController;
 use App\Repository\CreateRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CreateRepository::class)]
 #[ORM\Table(name: '`create`')]
-#[ApiResource()]
+#[ApiResource(collectionOperations: [
+    'get',
+    'create_question' => [
+        'method' => 'POST',
+        'path' => '/creates/createsQuestions',
+        'controller' => CreateController::class
+    ],
+])]
 class Create
 {
     #[ORM\Id]
@@ -26,7 +34,7 @@ class Create
     private array $answersProposed = [];
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $imageName;
+    private string $imageName;
 
     public function getId(): ?int
     {

@@ -47,4 +47,12 @@ class CreateRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getQuestions($limitedResult) {
+        return $this->createQueryBuilder('p')
+            ->setMaxResults($limitedResult)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
