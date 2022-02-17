@@ -1,0 +1,19 @@
+@mixin button($fontSize, $width) {
+    position: relative;
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: $fontSize;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 200ms ease-in-out;
+    outline: none;
+    border: 1px solid transparent;
+    margin: 0px;
+    padding: 8px 18px;
+    min-height: 48px;
+    background-color: #1C2350;
+    color: rgb(68, 60, 0);
+    border-radius: 4px;
+    color: white;
+    width: $width;
+}
