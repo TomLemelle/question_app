@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220216192327 extends AbstractMigration
+final class Version20220217155710 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,14 +20,16 @@ final class Version20220216192327 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE "create" ADD image_info TEXT NULL');
-        $this->addSql('COMMENT ON COLUMN "create".image_info IS \'(DC2Type:simple_array)\'');
+        $this->addSql('ALTER TABLE "create" ADD image_name VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE "create" DROP image_info');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('ALTER TABLE "create" DROP image_info');
+        $this->addSql('ALTER TABLE "create" ADD image_info TEXT NOT NULL');
+        $this->addSql('ALTER TABLE "create" DROP image_name');
+        $this->addSql('COMMENT ON COLUMN "create".image_info IS \'(DC2Type:array)\'');
     }
 }

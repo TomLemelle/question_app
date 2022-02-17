@@ -25,8 +25,8 @@ class Create
     #[ORM\Column(type: 'array')]
     private array $answersProposed = [];
 
-    #[ORM\Column(type: 'array')]
-    private $imageInfo = [];
+    #[ORM\Column(type: 'string', length: 255)]
+    private $imageName;
 
     public function getId(): ?int
     {
@@ -69,14 +69,14 @@ class Create
         return $this;
     }
 
-    public function getImageInfo(): ?array
+    public function getImageName(): ?string
     {
-        return $this->imageInfo;
+        return $this->imageName;
     }
 
-    public function setImageInfo(array $imageInfo): self
+    public function setImageName(string $imageName): self
     {
-        $this->imageInfo = $imageInfo;
+        $this->imageName = $imageName;
 
         return $this;
     }
