@@ -11,9 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: '`create`')]
 #[ApiResource(collectionOperations: [
     'get',
-    'create_question' => [
+    'moe' => [
         'method' => 'POST',
-        'path' => '/creates/createsQuestions',
+        'path' => '/creates/moe',
         'controller' => CreateController::class
     ],
 ])]
@@ -89,4 +89,5 @@ class Create
         return $this;
     }
 
+    
 }
