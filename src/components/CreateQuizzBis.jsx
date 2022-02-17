@@ -4,9 +4,6 @@ import { useState } from "react";
 import { storage } from "../firebase/firebase-config";
 import uuid from "react-uuid";
 import ReactPlayer from 'react-player'
-import { getDownloadURL, uploadBytesResumable, ref } from "@firebase/storage";
-import fileDownload from "js-file-download";
-import FileSaver from "file-saver";
 
 const CreateQuizz = () => {
 
@@ -22,48 +19,16 @@ const CreateQuizz = () => {
             if(image == null) {
                 alert("Choisissez au moin une image");
             } else {
-                let key = data.image[0];
-                let newImgName = 'image-' + uuid() + "-" + key.name;
-                /*const storageRef = ref(storage, `/files/${newImgName}`)
-                const uploadTask = uploadBytesResumable(storageRef, key);
-                uploadTask.on("state_changed", (snapshot) => {
-                    const prog = Math.round(
-                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                    );
-                    setProgress(prog);
-                }, (err) => console.log(err),
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref)
-                        .then(url => {
-                            axios.get(`https://api.trace.moe/search?url=${encodeURIComponent(url)}`)
-                                .then(res => {
-                                    console.log('je suis là', res);
-                                    const getDataFromURL = (url) => new Promise((resolve, reject) => {
-                                        setTimeout(() => {
-                                            fetch(url)
-                                            .then(response => response.text())
-                                            .then(data => {
-                                                resolve(data);
-                                                setFS(FileSaver(data, newImgName))
-                                                console.log(FS)
-                                            })
-                                        })
-                                    })
-                                    getDataFromURL(res.data.result[0].video)*/
-                                    data.imageInfo = [res.data.result[0].video, url];
-                                    console.log('data image info', data.imageInfo);
-                                    if(data.imageInfo) {
-                                        data.answersProposed = Object.values(data.answersProposed);
-                                        const asyncCreateQuizz = async () => {
-                                            const res = await axios.post(baseURL + "creates", data )
-                                            console.log(res.data);
-                                        }
-                                        asyncCreateQuizz();
-                                    }
-                                });
-                        })
+//                let newImgName = 'image-' + uuid() + "-" + data.image;
+  //              data.imageName = newImgName;
+                //console.log('data image info', data.imageName);
+                console.log(data)
+                data.answersProposed = Object.values(data.answersProposed);
+                const asyncCreateQuizz = async () => {
+                    const res = await axios.post(baseURL + "creates", data )
+                    console.log(res.data);
                 }
-                );
+                asyncCreateQuizz();
             }
         } catch (error) {
             console.error('error occured:' + error)   
@@ -78,10 +43,7 @@ const CreateQuizz = () => {
                     {errors.question && <span>Ce champ est requis</span>}
                 </div>
                 <div className="image-input">
-                    <label for="file-upload" class="custom-file-upload">
-                        Télécharger votre image ( cliquer ) *
-                    </label>
-                    <input {...register("image", { required: true })} id="file-upload" type="file"/>
+                    <input {...register("imageName", { required: true })} placeholder="L'url de votre image" type="text"/>
                     {image && <span>{image.name}</span> }
                     {errors.image && <span>Ce champ est requis</span>}
                 </div>

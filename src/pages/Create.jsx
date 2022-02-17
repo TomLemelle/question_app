@@ -1,9 +1,9 @@
-import CreateQuizz from '../components/CreateQuizz'
+import CreateQuizzBis from '../components/CreateQuizzBis'
 
 export default function Create () {
     return (
         <section className="create-quizz">
-            <CreateQuizz />
+            <CreateQuizzBis />
         </section>
     )
 }
